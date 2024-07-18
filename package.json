@@ -1,0 +1,26 @@
+{
+    "name": "transport-info",
+    "version": "1.0.0",
+    "description": "Transpor info API",
+    "main": "src/server.ts",
+    "scripts": {
+        "build": "tsc -p tsconfig.json -w",
+        "start": "tsc -w && node dist/server.js"
+    },
+    "author": "Rui",
+    "license": "ISC",
+    "dependencies": {
+        "@fastify/auth": "^4.6.1",
+        "@fastify/cookie": "^9.3.1",
+        "@fastify/cors": "^9.0.1",
+        "dotenv": "^16.4.5",
+        "fastify": "^4.28.1",
+        "fastify-plugin": "^4.5.1",
+        "pino-prettier": "^2.0.3",
+        "winston": "^3.13.1",
+        "winston-daily-rotate-file": "^5.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.14.10"
+    }
+}
