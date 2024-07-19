@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 import { SERVER_HOSTNAME, SERVER_PORT } from './config/config';
 import { createApp } from './app';
 
