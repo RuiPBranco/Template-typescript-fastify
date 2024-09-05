@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import pool from './db/db_conn';
+// import pool from './db/db_conn';
 
 dotenv.config();
 
@@ -12,7 +12,6 @@ const start = async () => {
     try {
         await app.listen({ port: SERVER_PORT, host: SERVER_HOSTNAME });
         console.log(`Server listening at ${SERVER_HOSTNAME}:${SERVER_PORT}`);
-        console.log(`Server 333333 ${pool}`);
     } catch (err) {
         app.log.error(err);
         process.exit(1);
