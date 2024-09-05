@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+    app:
+        build: .
+        container_name: 'app'
+        ports:
+            - '3000:3000'
+    database:
+        image: 'postgres'
+        container_name: 'postgrestest'
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: root
+            POSTGRES_DB: root
+        volumes:
+            - ae122ac35e698b4f2b3fa6132d830de0bf50fac053e06de1cde53d590afeb8d7:/var/lib/postgresql/data
+volumes:
+    ae122ac35e698b4f2b3fa6132d830de0bf50fac053e06de1cde53d590afeb8d7:
+        external: true
