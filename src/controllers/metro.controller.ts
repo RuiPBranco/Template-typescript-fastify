@@ -20,6 +20,15 @@ interface ApiResponse {
     resposta: Stop[];
 }
 
+interface Article {
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
+    link: string;
+    comment_count: number;
+}
+
 interface OAuthTokenResponse {
     access_token: string;
     token_type: string;
@@ -60,23 +69,56 @@ async function fetchProtectedData(apiUrl: string, accessToken: string) {
     }
 }
 
+// // Get data for Metro Position
+// async function fetchStops(): Promise<ApiResponse> {
+//     const clientId = 'U1jDUURaZUJZJV7d02lArCTyJxYa';
+//     const clientSecret = 'I7A5hV7BW8E7zNzVv4OCDwFNs78a';
+//     // const accessToken = '3d62eb05-3836-306f-a50e-c26743af708a';
+//     const tokenUrl = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1/infoEstacao/todos'; // Replace with the actual token URL
+//     const apiUrl = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1/infoEstacao/todos'; // Replace with the actual API URL
+
+//     try {
+//         // Step 1: Obtain the access token
+//         const accessToken = await getAccessToken(clientId, clientSecret, tokenUrl);
+//         console.log('Access Token:', accessToken);
+
+//         // Step 2: Use the access token to fetch protected data
+//         const data = await fetchProtectedData(apiUrl, accessToken);
+//         console.log('Protected Data:', data);
+//         return data.data;
+//     } catch (error) {
+//         console.error('Error in main process:', error);
+//         throw new Error('Condition not met');
+//     }
+
+//     // const response = await axios.get<ApiResponse>('https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1/infoEstacao/todos');
+//     // return response.data;
+// }
+
 // Get data for Metro Position
-async function fetchStops(): Promise<ApiResponse> {
-    const clientId = 'U1jDUURaZUJZJV7d02lArCTyJxYa';
-    const clientSecret = 'I7A5hV7BW8E7zNzVv4OCDwFNs78a';
-    // const accessToken = '3d62eb05-3836-306f-a50e-c26743af708a';
-    const tokenUrl = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1/infoEstacao/todos'; // Replace with the actual token URL
-    const apiUrl = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1/infoEstacao/todos'; // Replace with the actual API URL
+async function fetchStops(): Promise<Article[]> {
+    // const clientId = 'U1jDUURaZUJZJV7d02lArCTyJxYa';
+    // const clientSecret = 'I7A5hV7BW8E7zNzVv4OCDwFNs78a';
+    // // const accessToken = '3d62eb05-3836-306f-a50e-c26743af708a';
+    // const tokenUrl = 'https://api.metrolisboa.pt:8243/estadoServicoML/1.0.1/infoEstacao/todos'; // Replace with the actual token URL
+    const apiUrl = 'https://dummy-json.mock.beeceptor.com/posts';
 
     try {
         // Step 1: Obtain the access token
-        const accessToken = await getAccessToken(clientId, clientSecret, tokenUrl);
-        console.log('Access Token:', accessToken);
+        // const accessToken = await getAccessToken(clientId, clientSecret, tokenUrl);
+        // console.log('Access Token:', accessToken);
 
         // Step 2: Use the access token to fetch protected data
-        const data = await fetchProtectedData(apiUrl, accessToken);
-        console.log('Protected Data:', data);
-        return data.data;
+        // const data = await fetchProtectedData(apiUrl, accessToken);
+
+        const response = await axios.get<Article[]>(apiUrl, {
+            // headers: {
+            //     Authorization: `Bearer ${accessToken}`
+            // }
+        });
+
+        console.log('Protected Data:', response);
+        return response.data;
     } catch (error) {
         console.error('Error in main process:', error);
         throw new Error('Condition not met');
@@ -89,19 +131,18 @@ async function fetchStops(): Promise<ApiResponse> {
 export const getMetroPos = async (request: FastifyRequest, reply: FastifyReply) => {
     // Fetch users from database or service
     try {
-        fetchStops()
-            .then((data) => {
-                data.resposta.forEach((stop) => {
-                    console.log(stop);
-                    // console.log(`Stop Name: ${stop.stop_name}, Lines: ${stop.linha}`);
-                });
-            })
-            .catch((error) => {
-                console.error('Error fetching stops:', error);
-            });
+        // Use await to ensure the data is fetched before continuing
+        const data = await fetchStops();
+
+        // Assuming data is an array of stops or articles, you can log or process each stop
+        data.forEach((article) => {
+            console.log(article.userId); // Or any other property of article you want to log
+            // console.log(`Stop Name: ${stop.stop_name}, Lines: ${stop.linha}`); // Example for another dataset
+        });
+
         // const query = 'SELECT * FROM users';
         // const users = await executeQuery(query);
-        // reply.send(users);
+        reply.send(data);
     } catch (e) {
         console.error(`Error fetching data from Database`, e);
         reply.code(500).send(`Error fetching data from Database`);

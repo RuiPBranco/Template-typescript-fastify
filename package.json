@@ -6,7 +6,8 @@
     "scripts": {
         "build": "tsc",
         "start": "npm run build && nodemon",
-        "dev": ""
+        "dev": "",
+        "test": "jest"
     },
     "author": "Rui",
     "license": "ISC",
@@ -27,6 +28,10 @@
         "winston-daily-rotate-file": "^5.0.0"
     },
     "devDependencies": {
-        "@types/node": "^20.14.10"
+        "@types/jest": "^29.5.12",
+        "@types/node": "^20.14.10",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.2.5",
+        "typescript": "^5.6.3"
     }
 }
